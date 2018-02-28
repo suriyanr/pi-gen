@@ -1,6 +1,6 @@
 [Unit]
 Description=Scan and Connect to 100- wifi
-After=network.target
+Wants=network.target
 Before=dhcpcd5.service
 
 [Service]
