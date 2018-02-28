@@ -15,7 +15,7 @@ on_chroot << EOF
 systemctl disable hwclock.sh
 systemctl disable nfs-common
 systemctl disable rpcbind
-systemctl disable ssh
+systemctl enable ssh
 systemctl enable regenerate_ssh_host_keys
 EOF
 
@@ -55,6 +55,17 @@ EOF
 
 on_chroot << EOF
 usermod --pass='*' root
+EOF
+
+on_chroot << EOF
+wget https://nodejs.org/dist/v9.5.0/node-v9.5.0-linux-armv6l.tar.gz
+tar -zxvf node-v9.5.0-linux-armv6l.tar.gz
+cp -R node-v9.5.0-linux-armv6l/* /usr/local/
+rm -rf node-v9.5.0-linux-armv6l
+rm -f node-v9.5.0-linux-armv6l.tar.gz
+
+npm cache clean -f
+npm config set unsafe-perm true
 EOF
 
 rm -f ${ROOTFS_DIR}/etc/ssh/ssh_host_*_key*

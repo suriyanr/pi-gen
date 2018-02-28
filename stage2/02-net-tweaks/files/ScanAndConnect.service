@@ -1,0 +1,14 @@
+[Unit]
+Description=Scan and Connect to 100- wifi
+After=network.target
+Before=dhcpcd5.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/captivePortal
+ExecStart=/opt/captivePortal/ScanAndConnect.sh
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

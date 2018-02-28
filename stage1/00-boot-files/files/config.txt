@@ -54,3 +54,7 @@
 
 # Enable audio (loads snd_bcm2835)
 dtparam=audio=on
+
+# Enable console on USB port with gadget driver.
+dtoverlay=dwc2
+

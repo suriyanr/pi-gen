@@ -1,0 +1,13 @@
+[Unit]
+Description=captivePortal dhcp Service
+After=dhcpcd5.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/captivePortal/dhcpServer
+ExecStart=/usr/local/bin/node dhcpServer.js
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,14 @@
+[Unit]
+Description=captivePortal web server Service
+After=dhcpcd5.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/captivePortal
+ExecStart=/usr/local/bin/node webServer.js
+Restart=on-abort
+
+
+[Install]
+WantedBy=multi-user.target
