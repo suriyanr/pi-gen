@@ -24,9 +24,8 @@ on_chroot << EOF
 cd /opt/captivePortal
 tar -zxvf /opt/captivePortal/captivePortalRSN.tar.gz
 rm -f captivePortalRSN.tar.gz
-npm init -y
-npm install sqlite
+npm install
 sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.d/99-sysctl.conf
-apt-get -y remove --purge build-essential
+# apt-get -y remove --purge build-essential
 apt-get -y autoremove --purge 
 EOF
