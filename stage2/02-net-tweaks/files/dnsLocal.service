@@ -1,0 +1,15 @@
+[Unit]
+Description=captivePortal DNS local Service
+After=dhcpcd5.service
+
+[Service]
+Type=forking
+User=root
+WorkingDirectory=/opt/captivePortal/DNS
+
+ExecStart=/usr/sbin/dnsmasq --conf-file=/opt/captivePortal/DNS/dnsmasq.local.conf
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
+
