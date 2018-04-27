@@ -1,12 +1,12 @@
 [Unit]
-Description=captivePortal web server Service
+Description=captivePortal dhcp and web Service
 After=dhcpcd5.service
 
 [Service]
 Type=simple
 User=root
 WorkingDirectory=/opt/captivePortal
-ExecStart=/usr/local/bin/node webServer.js
+ExecStart=/usr/local/bin/node --max-old-space-size=250 bullServer.js
 Restart=on-abort
 
 
