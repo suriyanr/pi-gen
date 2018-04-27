@@ -10,8 +10,7 @@ install -v -d						${ROOTFS_DIR}/opt/captivePortal
 install -v -m 644 files/captivePortalRSN.tar.gz		${ROOTFS_DIR}/opt/captivePortal/
 install -v -m 544 files/ScanAndConnect.sh		${ROOTFS_DIR}/opt/captivePortal/
 install -v -m 644 files/ScanAndConnect.service		${ROOTFS_DIR}/etc/systemd/system/
-install -v -m 644 files/dhcpServer.service		${ROOTFS_DIR}/etc/systemd/system/
-install -v -m 644 files/webServer.service		${ROOTFS_DIR}/etc/systemd/system/
+install -v -m 644 files/bullServer.service		${ROOTFS_DIR}/etc/systemd/system/
 install -v -m 644 files/dnsLocal.service		${ROOTFS_DIR}/etc/systemd/system/
 install -v -m 644 files/dnsGlobal.service		${ROOTFS_DIR}/etc/systemd/system/
 
@@ -20,8 +19,7 @@ systemctl enable ScanAndConnect.service
 systemctl disable dnsmasq
 systemctl enable dnsLocal.service
 systemctl enable dnsGlobal.service
-systemctl enable dhcpServer.service
-systemctl enable webServer.service
+systemctl enable bullServer.service
 systemctl enable getty@ttyGS0.service
 EOF
 
