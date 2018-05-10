@@ -7,7 +7,7 @@ install -v -d                                           ${ROOTFS_DIR}/etc/wpa_su
 install -v -m 600 files/wpa_supplicant.conf             ${ROOTFS_DIR}/etc/wpa_supplicant/
 
 install -v -d						${ROOTFS_DIR}/opt/captivePortal
-install -v -m 644 files/captivePortalRSN.tar.gz		${ROOTFS_DIR}/opt/captivePortal/
+install -v -m 644 files/captivePortal.tar.gz		${ROOTFS_DIR}/opt/captivePortal/
 install -v -m 544 files/ScanAndConnect.sh		${ROOTFS_DIR}/opt/captivePortal/
 install -v -m 644 files/ScanAndConnect.service		${ROOTFS_DIR}/etc/systemd/system/
 install -v -m 644 files/bullServer.service		${ROOTFS_DIR}/etc/systemd/system/
@@ -25,8 +25,8 @@ EOF
 
 on_chroot << EOF
 cd /opt/captivePortal
-tar -zxvf /opt/captivePortal/captivePortalRSN.tar.gz
-rm -f captivePortalRSN.tar.gz
+tar -zxvf /opt/captivePortal/captivePortal.tar.gz
+rm -f captivePortal.tar.gz
 npm install
 sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.d/99-sysctl.conf
 # apt-get -y remove --purge build-essential
