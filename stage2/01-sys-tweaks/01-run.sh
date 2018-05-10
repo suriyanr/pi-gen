@@ -59,10 +59,10 @@ EOF
 
 on_chroot << EOF
 wget https://nodejs.org/dist/v9.11.1/node-v9.11.1-linux-armv6l.tar.xz
-tar -jxvf node-v9.11.1-linux-armv6l.tar.xz
+tar -xvf node-v9.11.1-linux-armv6l.tar.xz
 cp -R node-v9.11.1-linux-armv6l/* /usr/local/
 rm -rf node-v9.11.1-linux-armv6l
-rm -f node-v9.11.1-linux-armv6l.tar.gz
+rm -f node-v9.11.1-linux-armv6l.tar.xz
 
 npm cache clean -f
 npm config set unsafe-perm true
