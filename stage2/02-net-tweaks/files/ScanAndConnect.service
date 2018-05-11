@@ -6,8 +6,9 @@ Before=dhcpcd5.service
 [Service]
 Type=simple
 User=root
-WorkingDirectory=/opt/captivePortal
-ExecStart=/opt/captivePortal/ScanAndConnect.sh
+WorkingDirectory=/opt/captivePortal/WifiScanner
+EnvironmentFile=/opt/captivePortal/WifiScanner/ScanAndConnect.conf
+ExecStart=/opt/captivePortal/WifiScanner/ScanAndConnect.sh $ESSID
 Restart=on-abort
 
 [Install]
