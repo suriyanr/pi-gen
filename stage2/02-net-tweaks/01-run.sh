@@ -10,7 +10,6 @@ install -v -d						${ROOTFS_DIR}/opt/captivePortal
 install -v -d						${ROOTFS_DIR}/opt/Network
 install -v -d						${ROOTFS_DIR}/opt/Network/WifiScanner
 install -v -d						${ROOTFS_DIR}/opt/Network/DNS
-install -v -m 644 files/captivePortal.tar.gz		${ROOTFS_DIR}/opt/captivePortal/
 install -v -m 544 files/ScanAndConnect.sh		${ROOTFS_DIR}/opt/Network/WifiScanner/
 install -v -m 544 files/ScanAndConnect.conf		${ROOTFS_DIR}/opt/Network/WifiScanner/
 install -v -m 544 files/dnsmasq.local.conf		${ROOTFS_DIR}/opt/Network/DNS/
@@ -31,9 +30,11 @@ systemctl enable getty@ttyGS0.service
 EOF
 
 on_chroot << EOF
+cd /tmp
+git archive --format=tgz --remote=ssh://git@sridhar.vps360.net/home/git/captivePortal HEAD -o captivePortal.tar.gz
 cd /opt/captivePortal
-tar -zxvf /opt/captivePortal/captivePortal.tar.gz
-rm -f captivePortal.tar.gz
+tar -zxvf /tmp/captivePortal.tar.gz
+rm -f /tmp/captivePortal.tar.gz
 npm install
 sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.d/99-sysctl.conf
 # apt-get -y remove --purge build-essential

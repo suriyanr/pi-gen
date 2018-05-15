@@ -9,21 +9,18 @@
 #    the one with the strongest signal.
 
 WIFI_INT=wlan0
-WIFI_IP=192.168.3.32
+WIFI_IP=192.168.3.2
 WIFI_NETMASK=255.255.255.0
 WIFI_GW=192.168.3.1
+WIFI_DNS=192.168.3.1
 
 # Lets update dhcpcd.conf to get dhcpcd on its way.
 WIFI_DHCPCD_CONF=/etc/dhcpcd.conf
-grep -q 192.168.3.32 $WIFI_DHCPCD_CONF
-if [[ $? -ne 0 ]]; then
-  # This file needs an update
-  echo "" >> $WIFI_DHCPCD_CONF
-  echo "interface wlan0" >> $WIFI_DHCPCD_CONF
-  echo "  static ip_address=192.168.3.32/24" >> $WIFI_DHCPCD_CONF
-  echo "  static routers=192.168.3.1" >> $WIFI_DHCPCD_CONF
-  echo "  static domain_name_servers=192.168.3.1" >> $WIFI_DHCPCD_CONF
-fi
+echo "" >> $WIFI_DHCPCD_CONF
+echo "interface wlan0" >> $WIFI_DHCPCD_CONF
+echo "  static ip_address=$WIFI_IP/24" >> $WIFI_DHCPCD_CONF
+echo "  static routers=$WIFI_GW" >> $WIFI_DHCPCD_CONF
+echo "  static domain_name_servers=$WIFI_DNS" >> $WIFI_DHCPCD_CONF
 
 # Lets get the sid to connect to:
 ip link set $WIFI_INT up
