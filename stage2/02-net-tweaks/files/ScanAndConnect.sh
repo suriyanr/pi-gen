@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # Changes
+# 4. If invoked with 2nd parameter, assume its the SID password.
+# 3. Handle Chinese Characters in ESSID
 # 2. If invoked with a parameter, then assume that its the SID to connect to.
 # 1. Connect to the 100- SID which does not have encryption key set. If
 #    multiple 100- SIDs found, which qualify that criteria then connect to 
@@ -32,6 +34,12 @@ else
    MAX_QUALITY_ESSID=""
 fi
 
+if [[ "$2" != "" ]]; then
+   ESSID_PASSWORD=$2
+else
+   ESSID_PASSWORD=""
+fi
+
 while [[ "$MAX_QUALITY_ESSID" == "" ]]; do
    SCAN_FILE="/tmp/scan.txt"
    iwlist $WIFI_INT scanning > $SCAN_FILE
@@ -45,7 +53,7 @@ while [[ "$MAX_QUALITY_ESSID" == "" ]]; do
    do
       # Extract Quality and Encryption values for this SSID
       ESSID_FILE="/tmp/${ESSID}.txt"
-      cat $SCAN_FILE | grep -B3 $ESSID | egrep "Quality|Encryption" > $ESSID_FILE
+      cat $SCAN_FILE | grep -B3 -F $ESSID | egrep "Quality|Encryption" > $ESSID_FILE
       # This file will have lines as below:
       # Quality=40/70  Signal level=-19 dBm
       # Encryption key:off
@@ -90,38 +98,32 @@ while [[ "$MAX_QUALITY_ESSID" == "" ]]; do
    then
       sleep 5
    else
+      MAX_QUALITY_ESSID=`printf $MAX_QUALITY_ESSID`
       echo "Connection: MAX_QUALITY_ESSID: $MAX_QUALITY_ESSID QUALITY: $MAX_QUALITY"
    fi
 done
 
-# Below is for test env which has password set for wifi
-# Comment below line or set it to "" if open wifi.
-#WIFI_PASSWD="6507436826"
-
-# Lets check on the /etc/wpa_supplicant.conf file if it needs modification.
+# Rereate /etc/wpa_supplicant.conf file
 WIFI_WPACONF="/etc/wpa_supplicant/wpa_supplicant.conf"
-grep -q $MAX_QUALITY_ESSID $WIFI_WPACONF
-if [[ $? -ne 0 ]]; then
-   # This file needs an update
-   # For ease of use, let me just create file with basic content
-   echo "country=GB" > $WIFI_WPACONF
-   echo "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev" >> $WIFI_WPACONF
-   echo "update_config=1" >> $WIFI_WPACONF
-   echo "" >> $WIFI_WPACONF
-   echo "network={" >> $WIFI_WPACONF
-   echo "  ssid=\"$MAX_QUALITY_ESSID\"" >> $WIFI_WPACONF
-   if [[ "$WIFI_PASSWD" != "" ]]; then
-      # This is test env with a WIFI password
-      echo "  psk=\"$WIFI_PASSWD\"" >> $WIFI_WPACONF
-   else
-      # No wifi password
-     echo "  key_mgmt=NONE" >> $WIFI_WPACONF
-   fi
-   echo "}" >> $WIFI_WPACONF
 
-   # We need to daemon reload as we have modified some conf files which are used
-   # by dhcpcd.
-   systemctl daemon-reload
-   sleep 10
-   systemctl restart dhcpcd.service
+# For ease of use, let me just create file with basic content
+echo "country=GB" > $WIFI_WPACONF
+echo "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev" >> $WIFI_WPACONF
+echo "update_config=1" >> $WIFI_WPACONF
+echo "" >> $WIFI_WPACONF
+echo "network={" >> $WIFI_WPACONF
+echo "  ssid=\"$MAX_QUALITY_ESSID\"" >> $WIFI_WPACONF
+if [[ "$ESSID_PASSWORD" != "" ]]; then
+   # This is test env with a WIFI password
+   echo "  psk=\"$ESSID_PASSWORD\"" >> $WIFI_WPACONF
+else
+   # No wifi password
+   echo "  key_mgmt=NONE" >> $WIFI_WPACONF
 fi
+echo "}" >> $WIFI_WPACONF
+
+# We need to daemon reload as we have modified some conf files which are used
+# by dhcpcd.
+systemctl daemon-reload
+sleep 10
+systemctl restart dhcpcd.service

@@ -7,10 +7,15 @@ install -v -d                                           ${ROOTFS_DIR}/etc/wpa_su
 install -v -m 600 files/wpa_supplicant.conf             ${ROOTFS_DIR}/etc/wpa_supplicant/
 
 install -v -d						${ROOTFS_DIR}/opt/captivePortal
-install -v -d						${ROOTFS_DIR}/opt/captivePortal/WifiScanner
+install -v -d						${ROOTFS_DIR}/opt/Network
+install -v -d						${ROOTFS_DIR}/opt/Network/WifiScanner
+install -v -d						${ROOTFS_DIR}/opt/Network/DNS
 install -v -m 644 files/captivePortal.tar.gz		${ROOTFS_DIR}/opt/captivePortal/
-install -v -m 544 files/ScanAndConnect.sh		${ROOTFS_DIR}/opt/captivePortal/WifiScanner/
-install -v -m 544 files/ScanAndConnect.conf		${ROOTFS_DIR}/opt/captivePortal/WifiScanner/
+install -v -m 544 files/ScanAndConnect.sh		${ROOTFS_DIR}/opt/Network/WifiScanner/
+install -v -m 544 files/ScanAndConnect.conf		${ROOTFS_DIR}/opt/Network/WifiScanner/
+install -v -m 544 files/dnsmasq.local.conf		${ROOTFS_DIR}/opt/Network/DNS/
+install -v -m 544 files/dnsmasq.global.conf		${ROOTFS_DIR}/opt/Network/DNS/
+install -v -m 544 files/hosts				${ROOTFS_DIR}/opt/Network/DNS/
 install -v -m 644 files/ScanAndConnect.service		${ROOTFS_DIR}/etc/systemd/system/
 install -v -m 644 files/bullServer.service		${ROOTFS_DIR}/etc/systemd/system/
 install -v -m 644 files/dnsLocal.service		${ROOTFS_DIR}/etc/systemd/system/

@@ -8,7 +8,7 @@ Type=simple
 User=root
 WorkingDirectory=/opt/captivePortal/WifiScanner
 EnvironmentFile=/opt/captivePortal/WifiScanner/ScanAndConnect.conf
-ExecStart=/opt/captivePortal/WifiScanner/ScanAndConnect.sh $ESSID
+ExecStart=/opt/captivePortal/WifiScanner/ScanAndConnect.sh $ESSID $ESSID_PASSWORD
 Restart=on-abort
 
 [Install]

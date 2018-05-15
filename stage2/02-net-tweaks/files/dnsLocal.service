@@ -5,9 +5,9 @@ After=dhcpcd5.service
 [Service]
 Type=forking
 User=root
-WorkingDirectory=/opt/captivePortal/DNS
+WorkingDirectory=/opt/Network/DNS
 
-ExecStart=/usr/sbin/dnsmasq --conf-file=/opt/captivePortal/DNS/dnsmasq.local.conf
+ExecStart=/usr/sbin/dnsmasq --conf-file=/opt/Network/DNS/dnsmasq.local.conf
 Restart=on-abort
 
 [Install]
