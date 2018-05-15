@@ -29,12 +29,11 @@ systemctl enable bullServer.service
 systemctl enable getty@ttyGS0.service
 EOF
 
+git archive --format=tgz --remote=ssh://git@sridhar.vps360.net:2233/home/git/captivePortal HEAD -o ${ROOTFS_DIR}/opt/captivePortal/captivePortal.tar.gz
 on_chroot << EOF
-cd /tmp
-git archive --format=tgz --remote=ssh://git@sridhar.vps360.net/home/git/captivePortal HEAD -o captivePortal.tar.gz
 cd /opt/captivePortal
-tar -zxvf /tmp/captivePortal.tar.gz
-rm -f /tmp/captivePortal.tar.gz
+tar -zxvf captivePortal.tar.gz
+rm -f captivePortal.tar.gz
 npm install
 sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.d/99-sysctl.conf
 # apt-get -y remove --purge build-essential
