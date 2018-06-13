@@ -124,3 +124,17 @@ echo "}" >> $WIFI_WPACONF
 systemctl daemon-reload
 sleep 10
 systemctl restart dhcpcd.service
+
+# Adding Sridhar's traffic reshaping
+# mark local traffic as 6
+iptables -A OUTPUT -t mangle -p tcp --src 192.168.3.2 -d 192.168.3.0/24 -j MARK --set-mark 6
+
+#Create 2 classes, class 10 = slow, class 20 = fast
+tc qdisc add dev wlan0 root handle 1: htb default 20
+tc class add dev wlan0 parent 1:0 classid 1:20 htb rate 824kbit ceil 1024kbit prio 0 mtu 1500
+tc class add dev wlan0 parent 1:0 classid 1:10 htb rate 200kbit ceil 200kbit prio 1 mtu 1500
+
+#Apply filter to marked 6 and give higher rates
+tc filter add dev wlan0 parent 1:0 protocol ip prio 0 handle 6 fw flowid 1:20
+
+# Ending Sridhar's traffic reshaping
